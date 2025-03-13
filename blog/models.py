@@ -2,6 +2,14 @@ from django.db import models
 from django.utils import timezone
 from django.conf import  settings
 
+#create custom manager:
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return(
+            super().get_queryset().filter(status=Post.Status.PUBLISH)
+        )
+
+
 # Create your models here.
 
 class Post(models.Model):
@@ -25,6 +33,11 @@ class Post(models.Model):
         choices=Status,
         default=Status.DRAFT
         )
+    #make sure that the objects manager still the default manager:
+    objects = models.Manager()
+    #adding the custom manager: published, so that if we use Post.published.all() we would
+    #have all post with the published status....
+    published = PublishedManager()
         
     class Meta:
         ordering = ['-publish']
