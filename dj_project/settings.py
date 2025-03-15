@@ -124,9 +124,9 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-# Email server configuration
-EMAIL_HOST = 'smtp.gmail.com'
+#after you install python-decouple package for managing envioroment variables in .env file
+#Now add this Email server configuration
+EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
