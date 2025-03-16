@@ -4,7 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic import ListView
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
-
+from django.db.models import Count
 from taggit.models import Tag
 
 from .models import Post
@@ -27,7 +27,7 @@ def post_list(request, tag_slug=None):
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
         posts = posts.filter(tags__in=[tag])
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 7)
     page_number = request.GET.get('page')
     try:
         posts = paginator.page(page_number)     
@@ -44,10 +44,15 @@ def post_detail(request, year, month, day, post):
     post = get_object_or_404(
         Post, status=Post.Status.PUBLISH, publish__year=year, publish__month=month, publish__day =day, slug=post
         )
+    #list similar posts:
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')
+
     comments = post.comments.all()
     form = CommentForm()
 
-    return render(request, "blog/post/detail.html", {"post": post, "comments":comments, "form": form})
+    return render(request, "blog/post/detail.html", {"post": post, "comments":comments, "form": form, "similar_posts": similar_posts})
 
 
 def post_share(request, post_id):
