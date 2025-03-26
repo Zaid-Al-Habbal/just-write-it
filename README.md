@@ -1,12 +1,20 @@
 # Just Write It
+A blog web application for learning Django web framework.
 
 ## Features
--
+- Add Posts with tags and Draf/publish options using django-admin
+- Recommending posts by email
+- SEO-friendly URLs
+- Pagination
+- Comment system
+- Retrieving posts by similarity
+- tagging with django-taggit
+- full-text search 
 
 ## Prerequisites
 Before building just-write-it, ensure you have the following installed on your system:
 
-- python >= 10.0v
+- python 3.10+
 - git
 
 ## Setup for local development
@@ -36,6 +44,8 @@ Before building just-write-it, ensure you have the following installed on your s
 7. Run server:
    ```sh
    python manage.py runserver
+   
+8. Access the website at 127.0.0.1:8000
 
    
 ## Contribution
@@ -48,6 +58,3 @@ Contributions are welcome! To contribute:
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
-
-Enjoy exploring Cham City Center in 3D!
-
